@@ -2,10 +2,9 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 
-// Для локальной разработки используются значения по умолчанию.
-// При деплое на GitHub Pages переменные задаются автоматически в workflow.
-const site = process.env.SITE_URL || 'https://YOUR_USERNAME.github.io';
-const base = process.env.BASE_PATH || '/maldis-website';
+// Кастомный домен maldis.by — сайт отдаётся с корня (base: '/')
+const site = process.env.SITE_URL || 'https://maldis.by';
+const base = process.env.BASE_PATH || '/';
 
 export default defineConfig({
   site,
