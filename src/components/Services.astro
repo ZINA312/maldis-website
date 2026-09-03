@@ -1,0 +1,69 @@
+---
+import { services } from '../data/services';
+
+const pathIcons: Record<string, string> = {
+  shield: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+  scale: 'M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3',
+};
+
+const svgIcons: Record<string, { viewBox: string; paths: string; filled?: boolean }> = {
+  warehouse: {
+    viewBox: '0 0 15 15',
+    filled: true,
+    paths: 'M13.5,5c-0.0762,0.0003-0.1514-0.0168-0.22-0.05L7.5,2L1.72,4.93C1.4632,5.0515,1.1565,4.9418,1.035,4.685S1.0232,4.1215,1.28,4L7.5,0.92L13.72,4c0.2761,0.0608,0.4508,0.3339,0.39,0.61C14.0492,4.8861,13.7761,5.0608,13.5,5z M5,10H2v3h3V10z M9,10H6v3h3V10z M13,10h-3v3h3V10z M11,6H8v3h3V6z M7,6H4v3h3V6z',
+  },
+  snowflake: {
+    viewBox: '0 0 24 24',
+    paths: `<path d="M12 2V18M12 22V18M12 18L15 21M12 18L9 21M15 3L12 6L9 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M3.33978 7.00042L6.80389 9.00042M6.80389 9.00042L17.1962 15.0004M6.80389 9.00042L5.70581 4.90234M6.80389 9.00042L2.70581 10.0985M17.1962 15.0004L20.6603 17.0004M17.1962 15.0004L21.2943 13.9023M17.1962 15.0004L18.2943 19.0985" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M20.66 7.00042L17.1959 9.00042M17.1959 9.00042L6.80364 15.0004M17.1959 9.00042L18.294 4.90234M17.1959 9.00042L21.294 10.0985M6.80364 15.0004L3.33954 17.0004M6.80364 15.0004L2.70557 13.9023M6.80364 15.0004L5.70557 19.0985" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  },
+  truck: {
+    viewBox: '0 0 511.998 511.998',
+    filled: true,
+    paths: 'M444.502,109.036v208.49h-41.217V197.59h-75.308V77.655H146.942V197.59H71.634v119.936H0v72.953h41.331c-0.401,2.182-0.622,4.427-0.622,6.723c0,20.479,16.661,37.14,37.14,37.14c20.479,0,37.14-16.662,37.14-37.14c0-2.297-0.22-4.541-0.622-6.723h246.179c-0.4,2.182-0.622,4.427-0.622,6.723c0,20.479,16.661,37.14,37.14,37.14c20.48,0,37.141-16.662,37.141-37.14c0-2.297-0.22-4.541-0.622-6.723h41.331v-57.744v-15.209V139.453h37.081v-30.417C511.998,109.036,444.502,109.036,444.502,109.036z M327.976,258.469v-30.462h44.891v89.519H252.668v-89.519h44.891v30.462H327.976z M177.359,108.073h44.891v30.461h30.417v-30.461h44.891v89.518h-44.891H222.25h-44.891V108.073z M102.052,228.008h44.891v30.462h30.417v-30.462h44.891v89.519H102.052V228.008z M77.851,403.925c-3.708,0-6.723-3.016-6.723-6.723s3.016-6.723,6.723-6.723c3.707,0,6.723,3.015,6.723,6.723C84.574,400.909,81.558,403.925,77.851,403.925z M397.068,403.925c-3.707,0-6.723-3.016-6.723-6.723s3.016-6.723,6.723-6.723c3.709,0,6.724,3.015,6.724,6.723C403.792,400.909,400.776,403.925,397.068,403.925z M444.502,360.062H30.417v-12.118h41.217h150.617h30.417h150.617h41.217V360.062z',
+  },
+  parking: {
+    viewBox: '0 0 24 24',
+    filled: true,
+    paths: 'M5,22H19a3,3,0,0,0,3-3V5a3,3,0,0,0-3-3H5A3,3,0,0,0,2,5V19A3,3,0,0,0,5,22ZM4,5A1,1,0,0,1,5,4H19a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1ZM9,18a1,1,0,0,0,1-1V14h2a4,4,0,0,0,0-8H9A1,1,0,0,0,8,7V17A1,1,0,0,0,9,18ZM10,8h2a2,2,0,0,1,0,4H10Z',
+  },
+};
+---
+
+<section id="services" class="section-padding bg-gray-50">
+  <div class="container-main">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-3xl font-bold text-brand-900 sm:text-4xl">Наши услуги</h2>
+      <p class="mx-auto max-w-2xl text-gray-600">
+        Полный комплекс услуг для хранения, логистики и обработки продукции
+      </p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service) => (
+        <div class="card group">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600 transition group-hover:bg-brand-500 group-hover:text-white">
+            {svgIcons[service.icon] ? (
+              <svg
+                class="h-6 w-6"
+                viewBox={svgIcons[service.icon].viewBox}
+                fill={svgIcons[service.icon].filled ? 'currentColor' : 'none'}
+                aria-hidden="true"
+                set:html={svgIcons[service.icon].filled
+                  ? `<path d="${svgIcons[service.icon].paths}" />`
+                  : svgIcons[service.icon].paths}
+              />
+            ) : (
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d={pathIcons[service.icon]} />
+              </svg>
+            )}
+          </div>
+          <h3 class="mb-2 text-lg font-semibold text-brand-900">{service.title}</h3>
+          <p class="text-sm leading-relaxed text-gray-600">{service.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

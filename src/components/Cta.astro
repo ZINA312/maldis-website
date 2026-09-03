@@ -1,0 +1,21 @@
+---
+import { contacts } from '../data/contacts';
+const phoneHref = `tel:${contacts.phone.replace(/[^\d+]/g, '')}`;
+---
+
+<section class="section-padding bg-gradient-to-r from-brand-600 to-brand-500">
+  <div class="container-main text-center">
+    <h2 class="mb-4 text-3xl font-bold text-white sm:text-4xl">Нужен склад или хранение?</h2>
+    <p class="mx-auto mb-8 max-w-2xl text-lg text-white/90">
+      Свяжитесь с нами — подберём оптимальное решение под ваши задачи. Гибкие условия аренды и полный комплекс логистических услуг.
+    </p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="#contacts" class="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3 text-sm font-semibold text-brand-700 shadow-md transition hover:bg-frost-50">
+        Получить консультацию
+      </a>
+      <a href={phoneHref} class="inline-flex items-center justify-center rounded-lg border-2 border-white/40 px-8 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+        Позвонить сейчас
+      </a>
+    </div>
+  </div>
+</section>

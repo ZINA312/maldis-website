@@ -1,0 +1,75 @@
+---
+import { warehouses } from '../data/warehouses';
+import { withBase } from '../utils/baseUrl';
+---
+
+<section id="warehouses" class="section-padding">
+  <div class="container-main">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-3xl font-bold text-brand-900 sm:text-4xl">Наши склады</h2>
+      <p class="mx-auto max-w-2xl text-gray-600">
+        Современные холодильные и морозильные комплексы с различными температурными режимами
+      </p>
+    </div>
+
+    <div class="space-y-12">
+      {warehouses.map((warehouse, index) => (
+        <article class={`grid gap-8 lg:grid-cols-2 lg:items-center ${index % 2 === 1 ? 'lg:[direction:rtl]' : ''}`}>
+          <div class={`overflow-hidden rounded-2xl ${index % 2 === 1 ? 'lg:[direction:ltr]' : ''}`}>
+            <img
+              src={withBase(warehouse.image)}
+              alt={warehouse.name}
+              class="h-64 w-full object-cover transition hover:scale-105 sm:h-80"
+              loading="lazy"
+            />
+          </div>
+
+          <div class={index % 2 === 1 ? 'lg:[direction:ltr]' : ''}>
+            <div class="mb-3 flex flex-wrap gap-2">
+              <span class="rounded-full bg-frost-100 px-3 py-1 text-xs font-medium text-brand-700">
+                {warehouse.temperature}
+              </span>
+              <span class="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
+                {warehouse.area}
+              </span>
+            </div>
+
+            <h3 class="mb-3 text-2xl font-bold text-brand-900">{warehouse.name}</h3>
+            <p class="mb-4 text-gray-600">{warehouse.description}</p>
+
+            <ul class="mb-6 grid grid-cols-2 gap-2">
+              {warehouse.features.map((feature) => (
+                <li class="flex items-center gap-2 text-sm text-gray-700">
+                  <svg class="h-4 w-4 shrink-0 text-brand-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            {warehouse.chambers.length > 0 && (
+              <div>
+                <h4 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-500">Камеры хранения</h4>
+                <div class="space-y-3">
+                  {warehouse.chambers.map((chamber) => (
+                    <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
+                      <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="font-semibold text-brand-900">{chamber.name}</span>
+                        <div class="flex gap-2 text-xs">
+                          <span class="rounded bg-frost-100 px-2 py-0.5 text-brand-700">{chamber.temperature}</span>
+                          <span class="rounded bg-brand-50 px-2 py-0.5 text-brand-700">{chamber.area}</span>
+                        </div>
+                      </div>
+                      <p class="mt-1 text-sm text-gray-600">{chamber.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

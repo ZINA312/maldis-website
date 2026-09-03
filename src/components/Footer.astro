@@ -1,0 +1,41 @@
+---
+import { company } from '../data/company';
+import { contacts } from '../data/contacts';
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-brand-900 text-white">
+  <div class="container-main section-padding !py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="mb-4 flex items-center gap-2">
+          <span class="text-lg font-bold">{company.name}</span>
+        </div>
+        <p class="text-sm text-white/70">{company.tagline}</p>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-white/50">Контакты</h3>
+        <ul class="space-y-2 text-sm text-white/80">
+          <li><a href={`tel:${contacts.phone.replace(/[^\d+]/g, '')}`} class="hover:text-white">{contacts.phone}</a></li>
+          <li><a href={`mailto:${contacts.email}`} class="hover:text-white">{contacts.email}</a></li>
+          <li>{contacts.address}</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-white/50">Навигация</h3>
+        <ul class="space-y-2 text-sm text-white/80">
+          <li><a href="#services" class="hover:text-white">Услуги</a></li>
+          <li><a href="#warehouses" class="hover:text-white">Склады</a></li>
+          <li><a href="#about" class="hover:text-white">О компании</a></li>
+          <li><a href="#contacts" class="hover:text-white">Как добраться</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 border-t border-white/10 pt-6 text-center text-sm text-white/50">
+      © {year} {company.fullName}. Все права защищены.
+    </div>
+  </div>
+</footer>

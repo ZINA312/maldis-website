@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e5a9e"/>
+      <stop offset="100%" style="stop-color:#0f2f55"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#g)"/>
+  <text x="400" y="240" text-anchor="middle" fill="#bae6fd" font-family="Arial,sans-serif" font-size="28" font-weight="bold">%>;>48;L=K9 A:;04</text>
+  <text x="400" y="280" text-anchor="middle" fill="#93c5fd" font-family="Arial,sans-serif" font-size="16">0<5=8B5 =0 D>B>: public/images/warehouse-1.jpg</text>
+</svg>
