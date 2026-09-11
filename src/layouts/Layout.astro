@@ -1,14 +1,68 @@
 ---
 import '../styles/global.css';
+import { company } from '../data/company';
+import { contacts } from '../data/contacts';
 
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
-const { title = 'Малдис', description = 'Холодильные и морозильные склады в аренду' } = Astro.props;
-const fullTitle = title === 'Малдис' ? title : `${title} — Малдис`;
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://maldis.by').href;
+const defaultTitle = company.seoTitle;
+const defaultDescription = company.seoDescription;
+
+const {
+  title = defaultTitle,
+  description = defaultDescription,
+  image = '/images/warehouse-1-1.jpg',
+} = Astro.props;
+
+const siteOrigin = Astro.site?.origin ?? 'https://maldis.by';
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).href;
+const ogImageUrl = new URL(image, siteOrigin).href;
+const phonePrimary = contacts.phone.replace(/[^\d+]/g, '');
+const phoneSecondary = contacts.phoneSecondary.replace(/[^\d+]/g, '');
+const email = contacts.email.trim();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${siteOrigin}/#business`,
+  name: company.fullName,
+  alternateName: company.name,
+  description: company.seoDescription,
+  url: siteOrigin,
+  image: ogImageUrl,
+  telephone: [phonePrimary, phoneSecondary],
+  email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'пер. Гаражный, 19',
+    addressLocality: 'Могилёв',
+    addressCountry: 'BY',
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ],
+    opens: '08:00',
+    closes: '17:00',
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'Могилёв',
+  },
+  priceRange: '$$',
+  sameAs: [],
+};
 ---
 
 <!doctype html>
@@ -19,11 +73,30 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://maldis.b
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_BY" />
+    <meta property="og:site_name" content={company.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content="Холодильные и морозильные склады Малдис в Могилёве" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <title>{fullTitle}</title>
+    <title>{title}</title>
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <slot />
