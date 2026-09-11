@@ -1,0 +1,128 @@
+---
+interface Props {
+  images: string[];
+  alt: string;
+}
+
+const { images, alt } = Astro.props;
+const hasMultiple = images.length > 1;
+---
+
+<div class="warehouse-carousel relative overflow-hidden rounded-2xl bg-gray-900" data-carousel>
+  <div class="relative h-64 sm:h-80">
+    {images.map((src, i) => (
+      <div
+        class={`carousel-slide absolute inset-0 transition-opacity duration-500 ${i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        data-index={i}
+      >
+        <img
+          src={src}
+          alt=""
+          aria-hidden="true"
+          class="absolute inset-0 h-full w-full scale-110 object-cover blur-xl"
+          loading={i === 0 ? 'eager' : 'lazy'}
+        />
+        <div class="absolute inset-0 bg-black/20"></div>
+        <img
+          src={src}
+          alt={`${alt} — фото ${i + 1}`}
+          class="relative z-10 h-full w-full object-contain"
+          loading={i === 0 ? 'eager' : 'lazy'}
+        />
+      </div>
+    ))}
+  </div>
+
+  {hasMultiple && (
+    <>
+      <button
+        type="button"
+        class="carousel-prev absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60"
+        aria-label="Предыдущее фото"
+      >
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="carousel-next absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60"
+        aria-label="Следующее фото"
+      >
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      <div class="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+        {images.map((_, i) => (
+          <button
+            type="button"
+            class={`carousel-dot h-2.5 w-2.5 rounded-full transition ${i === 0 ? 'bg-white' : 'bg-white/50'}`}
+            data-index={i}
+            aria-label={`Фото ${i + 1}`}
+          />
+        ))}
+      </div>
+    </>
+  )}
+</div>
+
+<script>
+  function initCarousels() {
+    document.querySelectorAll('[data-carousel]').forEach((root) => {
+      const el = /** @type {HTMLElement} */ (root);
+      if (el.dataset.ready === '1') return;
+      el.dataset.ready = '1';
+
+      const slides = Array.from(el.querySelectorAll('.carousel-slide'));
+      if (slides.length <= 1) return;
+
+      const dots = Array.from(el.querySelectorAll('.carousel-dot'));
+      const prevBtn = el.querySelector('.carousel-prev');
+      const nextBtn = el.querySelector('.carousel-next');
+      let current = 0;
+      let touchStartX = 0;
+
+      const show = (index) => {
+        current = (index + slides.length) % slides.length;
+        slides.forEach((slide, i) => {
+          const active = i === current;
+          slide.classList.toggle('opacity-100', active);
+          slide.classList.toggle('opacity-0', !active);
+          slide.classList.toggle('pointer-events-none', !active);
+        });
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('bg-white', i === current);
+          dot.classList.toggle('bg-white/50', i !== current);
+        });
+      };
+
+      prevBtn?.addEventListener('click', () => show(current - 1));
+      nextBtn?.addEventListener('click', () => show(current + 1));
+      dots.forEach((dot) => {
+        dot.addEventListener('click', () => show(Number(dot.dataset.index)));
+      });
+
+      el.addEventListener(
+        'touchstart',
+        (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        },
+        { passive: true },
+      );
+      el.addEventListener(
+        'touchend',
+        (e) => {
+          const dx = e.changedTouches[0].screenX - touchStartX;
+          if (Math.abs(dx) < 40) return;
+          show(current + (dx < 0 ? 1 : -1));
+        },
+        { passive: true },
+      );
+    });
+  }
+
+  initCarousels();
+  document.addEventListener('astro:page-load', initCarousels);
+</script>

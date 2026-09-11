@@ -8,7 +8,7 @@
 
 ```bash
 npm install
-npm run dev      # локальный просмотр: http://localhost:4321/maldis-website/
+npm run dev      # локальный просмотр: http://localhost:4321/
 npm run build    # сборка в папку dist/
 ```
 
@@ -24,13 +24,20 @@ npm run build    # сборка в папку dist/
 | Контакты, адрес, карта, маршруты | `src/data/contacts.ts` |
 | Фотографии складов | `public/images/` |
 
-### Фотографии
+### Фотографии (карусель)
 
-Положите файлы в `public/images/` и укажите путь в `warehouses.ts`:
+1. Положите файлы в `public/images/` (например `warehouse-1-2.jpg`)
+2. Добавьте пути в массив `images` в `src/data/warehouses.ts`:
 
 ```ts
-image: '/images/warehouse-1.jpg',
+images: [
+  '/images/warehouse-1.jpg',
+  '/images/warehouse-1-2.jpg',
+  '/images/warehouse-1-3.jpg',
+],
 ```
+
+Если фото одно — карусель показывает только его, без стрелок.
 
 ### Карты
 
