@@ -1,8 +1,6 @@
 ---
 import { clients } from '../data/clients';
 import { withBase } from '../utils/baseUrl';
-
-const logos = [...clients, ...clients];
 ---
 
 {
@@ -19,37 +17,64 @@ const logos = [...clients, ...clients];
         <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white from-20% to-transparent sm:w-40 lg:w-56"></div>
         <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white from-20% to-transparent sm:w-40 lg:w-56"></div>
 
-        <div class="clients-track flex w-max items-center gap-12 py-6 sm:gap-20">
-          {logos.map((client, i) => (
-            <div
-              class="flex h-28 w-52 shrink-0 items-center justify-center sm:h-32 sm:w-64"
-              aria-hidden={i >= clients.length ? 'true' : undefined}
-            >
-              {client.url ? (
-                <a
-                  href={client.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex h-full w-full items-center justify-center transition hover:opacity-80"
-                  tabindex={i >= clients.length ? -1 : 0}
-                >
+        <div class="clients-track">
+          <div class="clients-set">
+            {clients.map((client) => (
+              <div class="clients-item">
+                {client.url ? (
+                  <a
+                    href={client.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex h-full w-full items-center justify-center transition hover:opacity-80"
+                  >
+                    <img
+                      src={withBase(client.logo)}
+                      alt={client.name}
+                      class="max-h-24 max-w-full object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0 sm:max-h-28"
+                      loading="lazy"
+                    />
+                  </a>
+                ) : (
                   <img
                     src={withBase(client.logo)}
-                    alt={i < clients.length ? client.name : ''}
+                    alt={client.name}
                     class="max-h-24 max-w-full object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0 sm:max-h-28"
                     loading="lazy"
                   />
-                </a>
-              ) : (
-                <img
-                  src={withBase(client.logo)}
-                  alt={i < clients.length ? client.name : ''}
-                  class="max-h-24 max-w-full object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0 sm:max-h-28"
-                  loading="lazy"
-                />
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            ))}
+          </div>
+          <div class="clients-set clients-set-clone" aria-hidden="true">
+            {clients.map((client) => (
+              <div class="clients-item">
+                {client.url ? (
+                  <a
+                    href={client.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex h-full w-full items-center justify-center"
+                    tabindex={-1}
+                  >
+                    <img
+                      src={withBase(client.logo)}
+                      alt=""
+                      class="max-h-24 max-w-full object-contain opacity-80 grayscale sm:max-h-28"
+                      loading="lazy"
+                    />
+                  </a>
+                ) : (
+                  <img
+                    src={withBase(client.logo)}
+                    alt=""
+                    class="max-h-24 max-w-full object-contain opacity-80 grayscale sm:max-h-28"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -58,31 +83,148 @@ const logos = [...clients, ...clients];
 
 <style>
   .clients-track {
+    display: flex;
+    width: -webkit-max-content;
+    width: max-content;
+    align-items: center;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    -webkit-animation: clients-scroll 35s linear infinite;
     animation: clients-scroll 35s linear infinite;
   }
 
+  .clients-set {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .clients-item {
+    display: flex;
+    height: 7rem;
+    width: 13rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    margin-right: 3rem;
+  }
+
+  @media (min-width: 640px) {
+    .clients-item {
+      height: 8rem;
+      width: 16rem;
+      margin-right: 5rem;
+    }
+  }
+
   .clients-marquee:hover .clients-track {
+    -webkit-animation-play-state: paused;
     animation-play-state: paused;
   }
 
-  @keyframes clients-scroll {
+  @-webkit-keyframes clients-scroll {
     from {
+      -webkit-transform: translateX(0);
       transform: translateX(0);
     }
     to {
+      -webkit-transform: translateX(-50%);
       transform: translateX(-50%);
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .clients-track {
-      animation: none;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-      max-width: 80rem;
-      margin-inline: auto;
-      padding-inline: 1rem;
+  @keyframes clients-scroll {
+    from {
+      -webkit-transform: translateX(0);
+      transform: translateX(0);
+    }
+    to {
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%);
     }
   }
+
+  /* Без анимации — одна сетка, без дубля (часто на iOS с «Уменьшить движение») */
+  @media (prefers-reduced-motion: reduce) {
+    .clients-marquee {
+      overflow: visible;
+    }
+
+    .clients-track {
+      -webkit-animation: none;
+      animation: none;
+      display: block;
+      width: 100%;
+      max-width: 80rem;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .clients-set {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .clients-set-clone {
+      display: none;
+    }
+
+    .clients-item {
+      margin-right: 1.5rem;
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .clients-marquee.clients-static .clients-track {
+    -webkit-animation: none;
+    animation: none;
+    display: block;
+    width: 100%;
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .clients-marquee.clients-static .clients-set {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .clients-marquee.clients-static .clients-set-clone {
+    display: none;
+  }
+
+  .clients-marquee.clients-static .clients-item {
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
 </style>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const marquee = document.querySelector('[data-clients-marquee]');
+  if (marquee) {
+    const track = marquee.querySelector('.clients-track');
+    const clone = marquee.querySelector('.clients-set-clone');
+    const applyFallback = () => {
+      if (!track || !clone) return;
+      const anim = window.getComputedStyle(track).animationName;
+      const noAnim = reduceMotion.matches || !anim || anim === 'none';
+      marquee.classList.toggle('clients-static', noAnim);
+    };
+    applyFallback();
+    if (typeof reduceMotion.addEventListener === 'function') {
+      reduceMotion.addEventListener('change', applyFallback);
+    } else if (typeof reduceMotion.addListener === 'function') {
+      reduceMotion.addListener(applyFallback);
+    }
+  }
+</script>
