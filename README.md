@@ -20,6 +20,7 @@ npm run build    # сборка в папку dist/
 |---|---|
 | Склады, камеры, фото | `src/data/warehouses.ts` |
 | Услуги | `src/data/services.ts` |
+| Клиенты (логотипы) | `src/data/clients.ts` + `public/images/clients/` |
 | О компании, статистика | `src/data/company.ts` |
 | Контакты, адрес, карта, маршруты | `src/data/contacts.ts` |
 | Фотографии складов | `public/images/` |
@@ -38,6 +39,20 @@ images: [
 ```
 
 Если фото одно — карусель показывает только его, без стрелок.
+
+### Логотипы клиентов
+
+1. Положите файлы в `public/images/clients/` (PNG/SVG/JPG)
+2. Отредактируйте `src/data/clients.ts`:
+
+```ts
+export const clients = [
+  { name: 'Название компании', logo: '/images/clients/company.png' },
+  { name: 'Другая компания', logo: '/images/clients/other.svg', url: 'https://example.com' },
+];
+```
+
+Секция «Наши клиенты» — бесконечная карусель; при наведении останавливается.
 
 ### Карты
 
