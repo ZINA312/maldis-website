@@ -1,5 +1,5 @@
 ---
-import { warehouses } from '../data/warehouses';
+import { normalizeWarehouseImages, warehouses } from '../data/warehouses';
 import { withBase } from '../utils/baseUrl';
 import ImageCarousel from './ImageCarousel.astro';
 ---
@@ -18,7 +18,11 @@ import ImageCarousel from './ImageCarousel.astro';
         <article class={`grid gap-8 lg:grid-cols-2 lg:items-start ${index % 2 === 1 ? 'lg:[direction:rtl]' : ''}`}>
           <div class={`lg:sticky lg:top-24 ${index % 2 === 1 ? 'lg:[direction:ltr]' : ''}`}>
             <ImageCarousel
-              images={warehouse.images.map((src) => withBase(src))}
+              images={normalizeWarehouseImages(warehouse.images).map((image) => ({
+                src: withBase(image.src),
+                caption: image.caption,
+                alt: image.alt,
+              }))}
               alt={warehouse.name}
             />
           </div>

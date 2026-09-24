@@ -30,16 +30,16 @@ import { withBase } from '../utils/baseUrl';
                   >
                     <img
                       src={withBase(client.logo)}
-                      alt={client.name}
-                      class="max-h-24 max-w-full object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0 sm:max-h-28"
+                      alt={`Логотип ${client.name}`}
+                      class="max-h-24 max-w-full object-contain sm:max-h-28"
                       loading="lazy"
                     />
                   </a>
                 ) : (
                   <img
                     src={withBase(client.logo)}
-                    alt={client.name}
-                    class="max-h-24 max-w-full object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0 sm:max-h-28"
+                    alt={`Логотип ${client.name}`}
+                    class="max-h-24 max-w-full object-contain sm:max-h-28"
                     loading="lazy"
                   />
                 )}
@@ -60,7 +60,7 @@ import { withBase } from '../utils/baseUrl';
                     <img
                       src={withBase(client.logo)}
                       alt=""
-                      class="max-h-24 max-w-full object-contain opacity-80 grayscale sm:max-h-28"
+                      class="max-h-24 max-w-full object-contain sm:max-h-28"
                       loading="lazy"
                     />
                   </a>
@@ -68,7 +68,7 @@ import { withBase } from '../utils/baseUrl';
                   <img
                     src={withBase(client.logo)}
                     alt=""
-                    class="max-h-24 max-w-full object-contain opacity-80 grayscale sm:max-h-28"
+                    class="max-h-24 max-w-full object-contain sm:max-h-28"
                     loading="lazy"
                   />
                 )}
@@ -107,6 +107,17 @@ import { withBase } from '../utils/baseUrl';
     align-items: center;
     justify-content: center;
     margin-right: 3rem;
+  }
+
+  .clients-item img {
+    opacity: 0.8;
+    filter: grayscale(1);
+    transition: opacity 0.2s ease, filter 0.2s ease;
+  }
+
+  .clients-item:hover img {
+    opacity: 1;
+    filter: grayscale(0);
   }
 
   @media (min-width: 640px) {

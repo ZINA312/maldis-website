@@ -1,3 +1,20 @@
+/** Фото склада: путь или объект с необязательной подписью и alt для поисковиков */
+export type WarehouseImage =
+  | string
+  | {
+      src: string;
+      /** Подпись снизу на фото */
+      caption?: string;
+      /** Текст для поисковиков и скринридеров */
+      alt?: string;
+    };
+
+export function normalizeWarehouseImages(
+  images: WarehouseImage[],
+): { src: string; caption?: string; alt?: string }[] {
+  return images.map((image) => (typeof image === 'string' ? { src: image } : image));
+}
+
 export interface StorageChamber {
   name: string;
   temperature: string;
@@ -14,8 +31,8 @@ export interface Warehouse {
   area: string;
   description: string;
   chambers: StorageChamber[];
-  /** Несколько фото склада — показываются в карусели. Добавляйте пути в public/images/ */
-  images: string[];
+  /** Несколько фото склада — показываются в карусели. Можно строку или { src, caption, alt }. */
+  images: WarehouseImage[];
   features: string[];
 }
 
@@ -28,8 +45,36 @@ export const warehouses: Warehouse[] = [
     description:
       'Морозильный склад с камерами глубокой заморозки. Идеален для хранения замороженных полуфабрикатов, мяса, рыбы и прочего. Шоковая заморозка на территории.',
     images: [
-      '/images/warehouse-1-1.jpg',
-      '/images/warehouse-1-2.jpg',
+      {
+        src: '/images/warehouse-1-1.jpg',
+        caption: 'Склад №1',
+        alt: 'Холодильно-морозильный склад №1 Малдис в Могилёве',
+      },
+      {
+        src: '/images/warehouse-1-4.jpg',
+        caption: 'Закрытая рампа для перемещения груза',
+        alt: 'Закрытая рампа для погрузки и разгрузки на складе №1 Малдис в Могилёве',
+      },
+      {
+        src: '/images/warehouse-1-3.jpg',
+        caption: 'Морозильная камера №1',
+        alt: 'Морозильная камера №1 склада №1 Малдис в Могилёве',
+      },
+      {
+        src: '/images/warehouse-1-6.jpg',
+        caption: 'Морозильная камера №2',
+        alt: 'Морозильная камера №2 склада №1 Малдис в Могилёве',
+      },
+      {
+        src: '/images/warehouse-1-5.jpg',
+        caption: 'Морозильная камера №3',
+        alt: 'Морозильная камера №3 склада №1 Малдис в Могилёве',
+      },
+      {
+        src: '/images/warehouse-1-2.jpg',
+        caption: 'Камера шоковой заморозки',
+        alt: 'Камера шоковой заморозки на складе №1 Малдис в Могилёве',
+      },
     ],
     features: [
       'Шоковая заморозка',
@@ -42,15 +87,15 @@ export const warehouses: Warehouse[] = [
     chambers: [
       {
         name: 'Холодильно-морозильная камера 1',
-        temperature: 'от -30°C до -18°C',
-        area: '380 м²',
-        height: '3,5 м',
-        description: 'Стандартное хранение замороженной продукции.',
+        temperature: 'от +6°C до -18°C',
+        area: '120 м²',
+        height: '5,5 м',
+        description: 'Глубокая заморозка для длительного хранения. Частично оснащен фронтальными стеллажами.',
       },
       {
         name: 'Холодильно-морозильная камера 2',
         temperature: 'от +6°C до -18°C',
-        area: '120 м²',
+        area: '460 м²',
         height: '3,5 м',
         description: 'Стандартное хранение замороженной продукции.',
       },
@@ -58,15 +103,8 @@ export const warehouses: Warehouse[] = [
         name: 'Холодильно-морозильная камера 3',
         temperature: 'от +6°C до -18°C',
         area: '120 м²',
-        height: '5,5 м',
-        description: 'Глубокая заморозка для длительного хранения. Частично оснащен фронтальными стеллажами.',
-      },
-      {
-        name: 'Холодильно-морозильная камера 4',
-        temperature: 'от +6°C до -18°C',
-        area: '230 м²',
         height: '3,5 м',
-        description: 'Глубокая заморозка для длительного хранения.',
+        description: 'Стандартное хранение замороженной продукции.',
       },
       {
         name: 'Камера шоковой заморозки',
@@ -85,7 +123,16 @@ export const warehouses: Warehouse[] = [
     description:
       'Холодильно-морозильный склад с камерами глубокой заморозки. Идеален для хранения замороженных полуфабрикатов, мяса, рыбы и прочего.',
     images: [
-      '/images/warehouse-2-1.jpg',
+      {
+        src: '/images/warehouse-2-1.jpg',
+        caption: 'Склад №2',
+        alt: 'Холодильно-морозильный склад №2 Малдис в Могилёве',
+      },
+      {
+        src: '/images/warehouse-2-2.jpg',
+        caption: 'Морозильная камера №1',
+        alt: 'Морозильная камера склада №2 Малдис в Могилёве',
+      },
     ],
     features: [
       'Круглосуточный доступ к продукции',
@@ -112,9 +159,21 @@ export const warehouses: Warehouse[] = [
     description:
       'Холодильно-морозильный склад с камерами глубокой заморозки. Идеален для хранения замороженных полуфабрикатов, мяса, рыбы и прочего.',
     images: [
-      '/images/warehouse-3-1.jpg',
-      '/images/warehouse-3-2.jpg',
-      '/images/warehouse-3-3.jpg',
+      {
+        src: '/images/warehouse-3-2.jpg',
+        caption: 'Морозильная камера №1',
+        alt: 'Морозильная камера №1 склада №3 Малдис в Могилёве',
+      },
+      {
+        src: '/images/warehouse-3-1.jpg',
+        caption: 'Морозильная камера №2',
+        alt: 'Морозильная камера №2 склада №3 Малдис в Могилёве',
+      },
+      {
+        src: '/images/warehouse-3-3.jpg',
+        caption: 'Морозильные камеры №4 и №5',
+        alt: 'Морозильные камеры №4 и №5 склада №3 Малдис в Могилёве',
+      },
     ],
     features: [
       'Круглосуточный доступ к продукции',
@@ -169,10 +228,22 @@ export const warehouses: Warehouse[] = [
     description:
       'Офисные помещения различной площади на территории логистического комплекса. Удобное расположение рядом со складами, парковка, охрана.',
     images: [
-      '/images/office-1.jpg',
-      '/images/office-2.jpg',
-      '/images/office-3.jpg',
-      '/images/office-4.jpg',
+      {
+        src: '/images/office-1.jpg',
+        alt: 'Офисное помещение на территории склада Малдис в Могилёве',
+      },
+      {
+        src: '/images/office-2.jpg',
+        alt: 'Рабочее место в офисе логистического комплекса Малдис в Могилёве',
+      },
+      {
+        src: '/images/office-3.jpg',
+        alt: 'Офис для аренды рядом со складами Малдис в Могилёве',
+      },
+      {
+        src: '/images/office-4.jpg',
+        alt: 'Отапливаемое офисное помещение комплекса Малдис в Могилёве',
+      },
     ],
     features: [
       'Гибкие площади',

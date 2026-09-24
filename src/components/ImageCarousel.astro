@@ -1,6 +1,6 @@
 ---
 interface Props {
-  images: string[];
+  images: { src: string; caption?: string; alt?: string }[];
   alt: string;
 }
 
@@ -10,13 +10,13 @@ const hasMultiple = images.length > 1;
 
 <div class="warehouse-carousel relative overflow-hidden rounded-2xl bg-gray-900" data-carousel>
   <div class="relative h-64 sm:h-80">
-    {images.map((src, i) => (
+    {images.map((image, i) => (
       <div
         class={`carousel-slide absolute inset-0 transition-opacity duration-500 ${i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         data-index={i}
       >
         <img
-          src={src}
+          src={image.src}
           alt=""
           aria-hidden="true"
           class="absolute inset-0 h-full w-full scale-110 object-cover blur-xl"
@@ -24,11 +24,20 @@ const hasMultiple = images.length > 1;
         />
         <div class="absolute inset-0 bg-black/20"></div>
         <img
-          src={src}
-          alt={`${alt} — фото ${i + 1}`}
+          src={image.src}
+          alt={image.alt || (image.caption ? `${alt} — ${image.caption}` : `${alt} — фото ${i + 1}`)}
           class="relative z-10 h-full w-full object-contain"
           loading={i === 0 ? 'eager' : 'lazy'}
         />
+        {image.caption && (
+          <div
+            class={`absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/80 via-black/45 to-transparent px-4 pt-10 ${hasMultiple ? 'pb-10' : 'pb-3'}`}
+          >
+            <p class="text-center text-sm font-medium leading-snug text-white sm:text-base">
+              {image.caption}
+            </p>
+          </div>
+        )}
       </div>
     ))}
   </div>
@@ -54,7 +63,7 @@ const hasMultiple = images.length > 1;
         </svg>
       </button>
 
-      <div class="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+      <div class="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 gap-2">
         {images.map((_, i) => (
           <button
             type="button"
